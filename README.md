@@ -20,6 +20,8 @@ The project is maintained by a non-profit organisation called the **Ghost Founda
 
 # Quick Start Install
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/caseyWebb/chrisbogg.us.svg)](https://greenkeeper.io/)
+
 Make sure you've installed Node.js - We recommend the latest **Node v0.10.x** release. For other versions [click here](http://support.ghost.org/supported-node-versions/). May contain nuts.
 
 1. Download the [latest release](https://ghost.org/developers/) of Ghost
