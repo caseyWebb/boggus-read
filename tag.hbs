@@ -1,0 +1,38 @@
+{{!< default}}
+
+{{! The comment above "< default" means - insert everything in this file into
+    the {body} of the default.hbs template, which contains our header/footer. }}
+
+<header class="tag-archive-header">
+  <h4>
+    <i class="fa fa-tag archive-title"></i>
+    <span class="tag-archive-header-name">
+      {{tag.name}}
+    </span>
+  </h4>
+</header>
+
+{{! Each post will be output using this markup }}
+{{#foreach posts}}
+
+<article id="post" class="{{post_class}} hentry">
+<div class="entry-meta">
+  <div class="meta-date">{{date format="DD MMM YYYY"}}</div>
+  <div>{{tags prefix="on "}}</div>
+</div>
+
+<div class="content-wrapper">
+	<header class="entry-header">
+  	<h1 class="entry-title"><a href="{{url}}">{{{title}}}</a></h1>
+  </header>
+  <div class="entry-content">
+    {{excerpt}}
+  </div>
+</div>
+
+</article>
+
+{{/foreach}}
+
+{{!! After all the posts, we have the previous/next pagination links }}
+{{pagination}}

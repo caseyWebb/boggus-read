@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{! Document Settings }}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    {{! Page Meta }}
+    <title>{{meta_title}}</title>
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {{! Styles and scripts }}
+    <link rel="stylesheet" type="text/css" href="{{asset "css/screen.css"}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset "fonts/font-awesome.css"}}" />
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="{{asset "js/jquery.ghostHunter.js"}}"></script>
+
+    {{! Ghost outputs important style and meta data with this tag }}
+    {{ghost_head}}
+</head>
+<body class="{{body_class}}">
+
+<div id="page" class="hfeed site">
+
+    <header id="masthead" class="site-header" role="banner">
+        <div class="header-wrapper">
+            <nav id="site-navigation" class="main-navigation" role="navigation">
+                <button class="menu-toggle">Menu</button>
+                {{navigation}}
+            </nav><!-- #site-navigation -->
+
+            <div id="site-search" class="header-search">
+                <div class="header-search-form">
+            <form class="search-form">
+                <label>
+                    <span class="screen-reader-text">Search archives</span>
+                    <span class="search-icon">
+                    <a class="search-toggle"><span class="screen-reader-text">Search</span></a>
+                    </span>
+                    <input type="search" id="search-field" class="search-field" placeholder="Search..." value="" name="s" title="Search..." />
+                </label>
+                <input type="submit" class="search-submit" value="search" />
+            </form>
+            </div><!-- #search -->
+            </div><!-- #search -->
+
+        </div><!-- .header-wrapper -->
+
+        <div class="header-image">
+            {{#if @blog.cover_image}}<a class="blog-cover" href="{{@blog.url}}"><img src="{{@blog.cover_image}}" alt="Blog" height="auto"/></a>{{/if}}
+        </div><!-- .header-image -->
+    </header><!-- #masthead -->
+
+    <div id="content" class="site-content">
+
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+            <section id="results"></section>
+                <script>
+                    $("#search-field").ghostHunter({
+                        results   : "#results"
+                    });
+                </script>
+
+                {{{body}}}
+        </main><!-- #main -->
+    </div><!-- #primary -->
+
+    <div id="secondary" class="widget-area" role="complementary">
+        <aside class="widget">
+            {{#if @blog.logo}}<a class="blog-logo" href="{{@blog.url}}"><img src="{{@blog.logo}}" alt="Blog Logo" /></a>{{/if}}
+
+            <h3 class="widget-title site-title"><a href="{{@blog.url}}">{{@blog.title}}</a></h3>
+            <p class="site-description">{{@blog.description}}</p>
+        </aside>
+
+        <aside class="widget" id="sidebar-links">
+                <ul id="sidebar-externals">
+                    {{> external-sidebar}}
+                </ul>
+        </aside>
+    </div><!-- #secondary -->
+
+    </div><!-- #content -->
+</div><!-- #page -->
+
+    {{! Ghost outputs important scripts and data with this tag }}
+    {{ghost_foot}}
+
+    {{! The main JavaScript files}}
+    <script type="text/javascript" src="{{asset "js/jquery.fitvids.js"}}"></script>
+    <script type="text/javascript" src="{{asset "js/index.js"}}"></script>
+    <script type="text/javascript" src="{{asset "js/navigation.js"}}"></script>
+
+</body>
+</html>
