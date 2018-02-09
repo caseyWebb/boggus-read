@@ -7,6 +7,8 @@
     "url": "https://caseyWebb.xyz"
   },
   "scripts": {
+    "build:ghost": "docker create --name boggus-read -p 2368:2368 -v $PWD:/var/lib/ghost/content/themes/casper ghost:1-alpine",
+    "start:ghost": "docker start -a boggus-read",
     "verify": "gscan ./"
   },
   "config": {
