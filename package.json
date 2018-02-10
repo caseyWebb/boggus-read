@@ -10,8 +10,8 @@
     "posts_per_page": 10
   },
   "scripts": {
-    "build:ghost": "docker create --name boggus-read -p 2368:2368 -v $PWD/build:/var/lib/ghost/content/themes/casper ghost:1-alpine",
-    "start:ghost": "docker start -a boggus-read",
+    "install": "./scripts/bootstrap.sh",
+    "start:backend": "docker start -a boggus-read-backend",
     "build:theme": "gulp"
   },
   "devDependencies": {
@@ -22,5 +22,9 @@
     "gulp-uglify": "^3.0.0",
     "gulp-zip": "^4.1.0",
     "uglify-js": "^3.3.10"
+  },
+  "dependencies": {
+    "ghost-storage-preprocessor": "^0.0.0",
+    "ghost-storage-preprocessor-transform-sqip": "^0.0.1"
   }
 }

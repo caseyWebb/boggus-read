@@ -11,20 +11,20 @@ const zip = require('gulp-zip')
 
 gulp.task('css', () => gulp.src('./src/css/*.css')
   .pipe(crass({ pretty: false }))
-  .pipe(gulp.dest('./build/assets/css/')))
+  .pipe(gulp.dest('./content/themes/casper/assets/css/')))
 
 gulp.task('images', () => gulp.src('./src/images/*', { buffer: false })
-  .pipe(gulp.dest('./build/assets/images/')))
+  .pipe(gulp.dest('./content/themes/casper/assets/images/')))
 
 gulp.task('js', () => gulp.src('./src/js/*')
   .pipe(uglify())
-  .pipe(gulp.dest('./build/assets/js/')))
+  .pipe(gulp.dest('./content/themes/casper/assets/js/')))
 
 gulp.task('templates', () => gulp.src('./src/templates/**', { buffer: false })
-  .pipe(gulp.dest('./build/')))
+  .pipe(gulp.dest('./content/themes/casper/')))
 
 gulp.task('zip', () => gulp.src([
-  './build/**',
+  './content/themes/casper/**',
   './package.json'
 ], { buffer: false })
   .pipe(zip('boggus-read.zip'))
