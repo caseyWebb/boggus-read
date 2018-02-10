@@ -11,9 +11,13 @@ const copy = require('gulp-copy')
 const crass = require('gulp-crass')
 const uglify = require('gulp-uglify/composer')(require('uglify-es'), console)
 const zip = require('gulp-zip')
+const webpack = require('webpack-stream')
+const named = require('vinyl-named')
  
 const src = (x) => './src/' + x
 const dest = (x) => './content/themes/casper/' + x
+
+let watch
 
 const paths = {
   dist: ['content/theme', 'boggus-read.zip'],
@@ -49,9 +53,21 @@ gulp.task('css', () => gulp.src(paths.css.src)
 gulp.task('images', () => gulp.src(paths.images.src, { buffer: false, since: gulp.lastRun('images') })
   .pipe(gulp.dest(paths.images.dest)))
 
-gulp.task('js', () => gulp.src(paths.js.src, { since: gulp.lastRun('js') })
-  .pipe(uglify())
-  .pipe(gulp.dest(paths.js.dest)))
+gulp.task('js', (done) => {
+  gulp.src(paths.js.src)
+    .pipe(named())
+    .pipe(webpack({
+      watch,
+      module: {
+        loaders: [
+          { test: /\.hbs$/, loader: 'handlebars-loader' },
+        ],
+      },
+    }))
+    // .pipe(uglify())
+    .pipe(gulp.dest(paths.js.dest))
+  done()
+})
 
 gulp.task('templates', () => gulp.src(paths.templates.src, { buffer: false, since: gulp.lastRun('templates') })
   .pipe(gulp.dest(paths.templates.dest)))
@@ -104,7 +120,6 @@ gulp.task('backend:restart', (done) => {
 
 gulp.task('watch', () => {
   gulp.watch(paths.css.src, gulp.series('css'))
-  gulp.watch(paths.js.src, gulp.series('js'))
   gulp.watch(paths.images.src, gulp.series('images'))
   gulp.watch(paths.templates.src, gulp.series('templates', 'backend:restart'))
   gulp.watch(paths.zip.src, gulp.series('zip'))
@@ -113,6 +128,10 @@ gulp.task('watch', () => {
 
 gulp.task('develop',
   gulp.series(
+    (done) => {
+      watch = true
+      done()
+    },
     'default',
     gulp.parallel(
       'backend:start',
