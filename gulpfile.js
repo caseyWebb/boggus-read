@@ -10,7 +10,7 @@ const crass = require('gulp-crass')
 const uglify = require('gulp-uglify')
 const zip = require('gulp-zip')
 
-gulp.task('mkdir', (done) => mkdirp('./content/themes/casper', done))
+gulp.task('mkdir', (done) => mkdirp('./content/themes/casper', () => done()))
 
 gulp.task('css', () => gulp.src('./src/css/*.css')
   .pipe(crass({ pretty: false }))
