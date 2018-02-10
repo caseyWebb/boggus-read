@@ -16,4 +16,4 @@ echo "\nBuilding docker image and container"
 docker build -t boggus-read-backend .
 docker create --name boggus-read-backend -p 2368:2368 -v $PWD/content:/var/lib/ghost/content boggus-read-backend
 
-echo "\n✨  All done! Run \`yarn start:backend\` to start the docker container.\n"
+echo "\n✨  All done! Run \`yarn develop\` to get started!\n"

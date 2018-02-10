@@ -1,43 +1,73 @@
 'use strict'
 
-const { isEmpty } = require('lodash')
+const { spawn } = require('child_process')
 const chalk = require('chalk')
-const mkdirp = require('mkdirp')
+const { isEmpty } = require('lodash')
 const gscan = require('gscan')
+const logger = require('gulplog')
 const gulp = require('gulp')
+const clean = require('gulp-clean')
 const copy = require('gulp-copy')
 const crass = require('gulp-crass')
 const uglify = require('gulp-uglify')
 const zip = require('gulp-zip')
 
-gulp.task('mkdir', (done) => mkdirp('./content/themes/casper', () => done()))
+const src = (x) => './src/' + x
+const dest = (x) => './content/themes/casper/' + x
 
-gulp.task('css', () => gulp.src('./src/css/*.css')
+const paths = {
+  dist: ['content/theme', 'boggus-read.zip'],
+  css: {
+    src: src('css/*.css'),
+    dest: dest('assets/css/')
+  },
+  images: {
+    src: src('images/*'),
+    dest: dest('assets/images/')
+  },
+  js: {
+    src: src('js/*'),
+    dest: dest('assets/js/')
+  },
+  templates: {
+    src: src('templates/**'),
+    dest: dest('')
+  },
+  zip: {
+    src: dest('**'),
+    dest: 'boggus-read.zip'
+  }
+}
+
+gulp.task('clean', () => gulp.src(paths.dist, { read: false, allowEmpty: true })
+  .pipe(clean()))
+
+gulp.task('css', () => gulp.src(paths.css.src)
   .pipe(crass({ pretty: false }))
-  .pipe(gulp.dest('./content/themes/casper/assets/css/')))
+  .pipe(gulp.dest(paths.css.dest)))
 
-gulp.task('images', () => gulp.src('./src/images/*', { buffer: false })
-  .pipe(gulp.dest('./content/themes/casper/assets/images/')))
+gulp.task('images', () => gulp.src(paths.images.src, { buffer: false, since: gulp.lastRun('images') })
+  .pipe(gulp.dest(paths.images.dest)))
 
-gulp.task('js', () => gulp.src('./src/js/*')
+gulp.task('js', () => gulp.src(paths.js.src, { since: gulp.lastRun('js') })
   .pipe(uglify())
-  .pipe(gulp.dest('./content/themes/casper/assets/js/')))
+  .pipe(gulp.dest(paths.js.dest)))
 
-gulp.task('templates', () => gulp.src('./src/templates/**', { buffer: false })
-  .pipe(gulp.dest('./content/themes/casper/')))
+gulp.task('templates', () => gulp.src(paths.templates.src, { buffer: false, since: gulp.lastRun('templates') })
+  .pipe(gulp.dest(paths.templates.dest)))
 
 gulp.task('package.json', () => gulp.src('./package.json', { buffer: false })
   .pipe(gulp.dest('./content/themes/casper/')))
 
-gulp.task('zip', () => gulp.src('./content/themes/casper/**', { buffer: false })
-  .pipe(zip('boggus-read.zip'))
+gulp.task('zip', () => gulp.src(paths.zip.src, { buffer: false })
+  .pipe(zip(paths.zip.dest))
   .pipe(gulp.dest('./')))
 
 gulp.task('validate', validate)
 
 gulp.task('default',
   gulp.series(
-    'mkdir',
+    'clean',
     gulp.parallel(
       'css',
       'images',
@@ -48,6 +78,47 @@ gulp.task('default',
     'zip',
     'validate'
   )
+)
+
+let backendProc, restart
+function startBackend(done) {
+  const prefix = `[${chalk.dim('BACKEND')}]`
+  backendProc = spawn('docker', ['start', '-a', 'boggus-read-backend'])
+  backendProc.stdout.on('data', (data) => {
+    logger.info(prefix, data.toString().trim().replace(/^\[[\d\s\W]+\]\s+/, ''))
+  })
+  backendProc.stderr.on('data', (data) => {
+    logger.error(prefix, data.toString().trim().replace(/^\[[\d\s\W]+\]\s+/, ''))
+  })
+  backendProc.on('close', () => {
+    logger.info(prefix, chalk.yellow('Container stopped... Restarting...'))
+    startBackend()
+  })
+  if (done) done()
+}
+gulp.task('backend:start', (done) => startBackend(done))
+gulp.task('backend:restart', (done) => {
+  backendProc.kill()
+  done()
+})
+
+gulp.task('watch', () => {
+  gulp.watch(paths.css.src, gulp.series('css'))
+  gulp.watch(paths.js.src, gulp.series('js'))
+  gulp.watch(paths.images.src, gulp.series('images'))
+  gulp.watch(paths.templates.src, gulp.series('templates', 'backend:restart'))
+  gulp.watch(paths.zip.src, gulp.series('zip'))
+  gulp.watch(paths.zip.dest, gulp.series('validate'))
+})
+
+gulp.task('develop',
+  gulp.series(
+    'default',
+    gulp.parallel(
+      'backend:start',
+      'watch'
+    )
+  )  
 )
 
 async function validate() {
