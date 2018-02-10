@@ -6,8 +6,8 @@ echo "\nInstalling ghost-storage-preprocessor and ghost-storage-preprocessor-tra
 mkdir -p content/adapters/storage/preprocessor/transforms
 cp -r ./node_modules/ghost-storage-preprocessor/** content/adapters/storage/preprocessor
 cp -r ./node_modules/ghost-storage-preprocessor-transform-sqip content/adapters/storage/preprocessor/transforms/sqip
-cd content/adapters/storage/preprocessor && npm install --no-save && cd -
-cd content/adapters/storage/preprocessor/transforms/sqip && npm install --no-save && cd -
+cd content/adapters/storage/preprocessor && yarn install --no-lockfile && cd -
+cd content/adapters/storage/preprocessor/transforms/sqip && yarn install --no-lockfile && cd -
 
 echo "\nRemoving existing docker container (if exists)"
 docker rm boggus-read-backend || true
