@@ -2,12 +2,15 @@
 
 const { isEmpty } = require('lodash')
 const chalk = require('chalk')
+const mkdirp = require('mkdirp')
 const gscan = require('gscan')
 const gulp = require('gulp')
 const copy = require('gulp-copy')
 const crass = require('gulp-crass')
 const uglify = require('gulp-uglify')
 const zip = require('gulp-zip')
+
+gulp.task('mkdir', (done) => mkdirp('./content/themes/casper', done))
 
 gulp.task('css', () => gulp.src('./src/css/*.css')
   .pipe(crass({ pretty: false }))
@@ -23,10 +26,10 @@ gulp.task('js', () => gulp.src('./src/js/*')
 gulp.task('templates', () => gulp.src('./src/templates/**', { buffer: false })
   .pipe(gulp.dest('./content/themes/casper/')))
 
-gulp.task('zip', () => gulp.src([
-  './content/themes/casper/**',
-  './package.json'
-], { buffer: false })
+gulp.task('package.json', () => gulp.src('./package.json', { buffer: false })
+  .pipe(gulp.dest('./content/themes/casper/')))
+
+gulp.task('zip', () => gulp.src('./content/themes/casper/**', { buffer: false })
   .pipe(zip('boggus-read.zip'))
   .pipe(gulp.dest('./')))
 
@@ -34,11 +37,13 @@ gulp.task('validate', validate)
 
 gulp.task('default',
   gulp.series(
+    'mkdir',
     gulp.parallel(
       'css',
       'images',
       'js',
-      'templates'
+      'templates',
+      'package.json'
     ),
     'zip',
     'validate'
