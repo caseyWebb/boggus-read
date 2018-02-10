@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "ghost-storage-preprocessor": "^0.0.0",
-    "ghost-storage-preprocessor-transform-sqip": "^0.0.1"
+    "ghost-storage-preprocessor-transform-sqip": "^0.0.1",
+    "pjax": "^0.2.5"
   },
   "devDependencies": {
     "chalk": "^2.3.0",
