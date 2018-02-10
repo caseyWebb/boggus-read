@@ -1,0 +1,17 @@
+.sqip-container {
+  position: relative;
+}
+.sqip-container .fq {
+  position: absolute;
+  top: 0;
+  z-index: 0;
+}
+.sqip {
+  position: relative;
+  z-index: 1;
+  transition: opacity .25s ease-in-out;
+}
+.sqip.hidden {
+  opacity: 0;
+}
+

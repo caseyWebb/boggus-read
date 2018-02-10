@@ -25,9 +25,10 @@
     "gulp-clean": "^0.4.0",
     "gulp-copy": "^1.1.0",
     "gulp-crass": "^0.2.2",
-    "gulp-log": "^0.0.0",
     "gulp-uglify": "^3.0.0",
     "gulp-zip": "^4.1.0",
-    "uglify-js": "^3.3.10"
+    "gulplog": "^1.0.0",
+    "lodash": "^4.17.5",
+    "uglify-es": "^3.3.10"
   }
 }

@@ -9,9 +9,9 @@ const gulp = require('gulp')
 const clean = require('gulp-clean')
 const copy = require('gulp-copy')
 const crass = require('gulp-crass')
-const uglify = require('gulp-uglify')
+const uglify = require('gulp-uglify/composer')(require('uglify-es'), console)
 const zip = require('gulp-zip')
-
+ 
 const src = (x) => './src/' + x
 const dest = (x) => './content/themes/casper/' + x
 

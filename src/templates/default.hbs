@@ -13,7 +13,9 @@
 
     {{! Styles and scripts }}
     <link rel="stylesheet" type="text/css" href="{{asset "css/screen.css"}}" />
-    <link rel="stylesheet" type="text/css" href="{{asset "fonts/font-awesome.css"}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset "css/sqip.css"}}" />
+    <link rel="stylesheet" type="text/css" href="{{asset "css/header.css"}}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
     <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="{{asset "js/jquery.ghostHunter.js"}}"></script>
@@ -50,7 +52,13 @@
         </div><!-- .header-wrapper -->
 
         <div class="header-image">
-            {{#if @blog.cover_image}}<a class="blog-cover" href="{{@blog.url}}"><img src="{{@blog.cover_image}}.sqip.svg" alt="Blog" height="auto"/></a>{{/if}}
+            {{#if @blog.cover_image}}
+            <a class="blog-cover" href="{{@blog.url}}">
+                <div class="sqip-container">
+                    <img class="sqip" src="{{@blog.cover_image}}.sqip.svg" alt="Boggus Read" height="auto"/>
+                </div>
+            </a>
+            {{/if}}
         </div><!-- .header-image -->
     </header><!-- #masthead -->
 
@@ -91,9 +99,6 @@
     {{ghost_foot}}
 
     {{! The main JavaScript files}}
-    <script type="text/javascript" src="{{asset "js/jquery.fitvids.js"}}"></script>
-    <script type="text/javascript" src="{{asset "js/index.js"}}"></script>
-    <script type="text/javascript" src="{{asset "js/navigation.js"}}"></script>
-
+    {{> scripts}}
 </body>
 </html>
