@@ -17,6 +17,7 @@
   "dependencies": {
     "ghost-storage-preprocessor": "^0.0.0",
     "ghost-storage-preprocessor-transform-sqip": "^0.0.1",
+    "pdfjs-dist": "^2.0.349",
     "pjax": "^0.2.5"
   },
   "devDependencies": {

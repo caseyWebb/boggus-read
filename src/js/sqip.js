@@ -1,5 +1,3 @@
-// @ts-check
-
 'use strict'
 
 document.querySelectorAll('img.sqip').forEach(transitionFullQuality)

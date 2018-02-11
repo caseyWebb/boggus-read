@@ -57,14 +57,12 @@ gulp.task('js', (done) => {
   gulp.src(paths.js.src)
     .pipe(named())
     .pipe(webpack({
-      watch,
-      module: {
-        loaders: [
-          { test: /\.hbs$/, loader: 'handlebars-loader' },
-        ],
+      output: {
+        publicPath: '/assets/js/'
       },
+      watch
     }))
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest(paths.js.dest))
   done()
 })
