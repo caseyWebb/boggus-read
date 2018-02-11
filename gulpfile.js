@@ -19,7 +19,7 @@ const dest = (x) => './content/themes/casper/' + x
 let watch
 
 const paths = {
-  dist: ['content/theme', 'boggus-read.zip'],
+  dist: ['content/themes/casper', 'boggus-read.zip'],
   css: {
     src: src('css/*.css'),
     dest: dest('assets/css/')
@@ -53,7 +53,7 @@ gulp.task('images', () => gulp.src(paths.images.src, { buffer: false, since: gul
   .pipe(gulp.dest(paths.images.dest)))
 
 gulp.task('js', (done) => {
-  gulp.src(paths.js.src)
+  const stream = gulp.src(paths.js.src)
     .pipe(named())
     .pipe(webpack({
       output: {
@@ -63,7 +63,11 @@ gulp.task('js', (done) => {
     }))
     .pipe(uglify())
     .pipe(gulp.dest(paths.js.dest))
-  done()
+  if (watch) {
+    done()
+  } else {
+    return stream
+  }
 })
 
 gulp.task('templates', () => gulp.src(paths.templates.src, { buffer: false, since: gulp.lastRun('templates') })
