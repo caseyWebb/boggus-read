@@ -33,14 +33,15 @@ function renderPdfElements() {
 async function loadPDFJS() {
   const styles = document.createElement('link')
   styles.setAttribute('rel', 'stylesheet')
-  styles.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.347/pdf_viewer.css')
+  styles.setAttribute('href', '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.354/pdf_viewer.css')
   document.body.appendChild(styles)
 
   await Promise.all([
     import('pdfjs-dist'),
     import('pdfjs-dist/web/pdf_viewer')
   ]).then(() => {
-    window.PDFJS.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js'
+    // needs to be updated whenever the pdfjs dependency is updated
+    window.PDFJS.workerSrc = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.354/pdf.worker.min.js'
   })
 }
 
