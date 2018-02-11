@@ -22,6 +22,8 @@
   },
   "devDependencies": {
     "chalk": "^2.3.0",
+    "eslint": "^4.17.0",
+    "eslint-config-profiscience": "^2.0.4",
     "gscan": "^1.3.0",
     "gulp": "^4.0.0",
     "gulp-clean": "^0.4.0",
