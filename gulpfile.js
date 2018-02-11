@@ -1,4 +1,4 @@
-'use strict'
+/* eslint-disable no-console */
 
 const { spawn } = require('child_process')
 const chalk = require('chalk')
@@ -7,13 +7,12 @@ const gscan = require('gscan')
 const logger = require('gulplog')
 const gulp = require('gulp')
 const clean = require('gulp-clean')
-const copy = require('gulp-copy')
 const crass = require('gulp-crass')
 const uglify = require('gulp-uglify/composer')(require('uglify-es'), console)
 const zip = require('gulp-zip')
 const webpack = require('webpack-stream')
 const named = require('vinyl-named')
- 
+
 const src = (x) => './src/' + x
 const dest = (x) => './content/themes/casper/' + x
 
@@ -94,7 +93,7 @@ gulp.task('default',
   )
 )
 
-let backendProc, restart
+let backendProc
 function startBackend(done) {
   const prefix = `[${chalk.dim('BACKEND')}]`
   backendProc = spawn('docker', ['start', '-a', 'boggus-read-backend'])
@@ -108,7 +107,9 @@ function startBackend(done) {
     logger.info(prefix, chalk.yellow('Container stopped... Restarting...'))
     startBackend()
   })
-  if (done) done()
+  if (done) {
+    done()
+  }
 }
 gulp.task('backend:start', (done) => startBackend(done))
 gulp.task('backend:restart', (done) => {
@@ -135,7 +136,7 @@ gulp.task('develop',
       'backend:start',
       'watch'
     )
-  )  
+  )
 )
 
 async function validate() {
@@ -151,15 +152,14 @@ async function validate() {
   const { results: {
     error,
     warning,
-    recommendation,
-    pass
+    recommendation
   } } = gscan.format(
     await gscan.checkZip({
       path: './boggus-read.zip',
       name: 'boggus-read'
     })
   )
-  
+
   const hasError = !isEmpty(error)
   const hasWarning = !isEmpty(warning)
   const hasRecommendation = !isEmpty(recommendation)
